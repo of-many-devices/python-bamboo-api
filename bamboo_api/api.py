@@ -433,6 +433,23 @@ class BambooAPIClient(object):
             # Note: do this here to keep it current with yields
             qs['start-index'] += results['max-result']
 
+    def create_branch(self, plan_key, branch_name, enabled=True, cleanup=True):
+        """
+        Create a branch for a plan
+
+        :param plan_key: str
+        :param enabled: bool
+        :param cleanup: bool
+        """
+        url = "{0}/{1}".format(self._get_url(self.BRANCH_SERVICE).format(key=plan_key), branch_name)
+
+        qs = {}
+        qs['vcsBranch']=branch_name
+        qs['enabled']=enabled
+        qs['cleanup']=cleanup
+
+        return self._put_response(url, qs).json()
+
     def get_projects(self):
         """
         List all projects
